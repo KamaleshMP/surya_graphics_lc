@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lost_reason_id']" position="after">
+                    <field name="lead_enquiry_id"/>
+                    <field name="source_of_lead"/>
+                    <field name="lead_product"/>
+                    <field name="lead_product_cat"/>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="before">
+                    <field name="lead_date"/>
+                    <field name="crm_mobile"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="crm_tin_tree_inherit_new" model="ir.ui.view">
+            <field name="name">Crm Lead</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="crm_mobile"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

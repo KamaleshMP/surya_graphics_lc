@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="alert_type_msg" model="type.temp.database">
+            <field name="name">Alert</field>
+            <field name="color">red</field>
+        </record>
+
+        <record id="congrats_type_msg" model="type.temp.database">
+            <field name="name">Congrats</field>
+            <field name="color">green</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+Whatsapp_sender.access_temp_database,access_temp_database,Whatsapp_sender.model_temp_database,base.group_user,1,1,1,1
+Whatsapp_sender.access_type_temp_database,access_type_temp_database,Whatsapp_sender.model_type_temp_database,base.group_user,1,1,1,1
+Whatsapp_sender.access_send_msg,access_send_msg,Whatsapp_sender.model_send_msg,base.group_user,1,1,1,1

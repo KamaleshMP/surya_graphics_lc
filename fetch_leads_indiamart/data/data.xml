@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+
+        <!--<record model="res.partner" id="partner_indiamart">
+            <field name="name">India Mart</field>
+            <field name="email">indiamart@venkatachalam.com</field>
+        </record>-->
+        <record model="crm.stage" id="stage_indiamart">
+        <field name="name">Indiamart</field>
+        <field name="fold" eval="False"/>
+        <field name="is_won">False</field>
+        <field name="sequence">71</field>
+    </record>
+    </data>
+</odoo>

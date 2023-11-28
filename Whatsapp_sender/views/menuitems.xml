@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<!--        <menuitem id="menu_test_items" name="Login Info" web_icon="Moduel_test,static/description/icon.png" sequence="0">-->
+
+    <menuitem id="menu_whats_temp" name="Whatsapp template">
+        <menuitem id="menu_temp" name="Template" sequence="50">
+            <menuitem id="temp_edit"
+                      name="Template edit"
+                      action="action_templates_edit"
+                      sequence="10"/>
+            <menuitem id="type_temp_edit"
+                      name="Type template"
+                      action="action_type_temp"
+                      sequence="20"/>
+        </menuitem>
+    </menuitem>
+</odoo>

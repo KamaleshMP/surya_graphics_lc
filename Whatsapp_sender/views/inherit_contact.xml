@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="contact_inherit" model="ir.ui.view">
+        <field name="name">contact.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/*" position="before">
+                <header>
+                    <button name="%(action_send_msg)d" type="action" string="Send whatsapp" context="{'default_phone': phone}"
+                            class="oe_highlight" icon="fa-whatsapp"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

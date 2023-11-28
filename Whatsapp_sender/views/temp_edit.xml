@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="tree_templates_edit" model="ir.ui.view">
+        <field name="name">Templates tree</field>
+        <field name="model">temp.database</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" decoration-danger="color == 'red'"
+                       decoration-info="color == 'blue'"
+                       decoration-primary="color == 'purple'"
+                       decoration-success="color == 'green'"
+                       decoration-warning="color == 'brown'"/>
+                <field name="type" decoration-danger="color == 'red'"
+                       decoration-info="color == 'blue'"
+                       decoration-primary="color == 'purple'"
+                       decoration-success="color == 'green'"
+                       decoration-warning="color == 'brown'"/>
+                <field name="template"/>
+                <field name="color" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <!--                  decoration-info="color == 'blue'"-->
+
+    <record id="search_templates_edit" model="ir.ui.view">
+        <field name="name">Templates Search</field>
+        <field name="model">temp.database</field>
+        <field name="arch" type="xml">
+            <search>
+                <group>
+                    <filter string="Type" name="type"
+                            context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="form_templates_edit" model="ir.ui.view">
+        <field name="name">Templates form</field>
+        <field name="model">temp.database</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="type"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="template"/>
+                    </group>
+                    <hr/>
+                    <p>To formation your text:</p>
+                    <ul>
+                        <li><b>Bold</b>: *Bold*
+                        </li>
+                        <li><em>italicize</em>: _italicize_
+                        </li>
+                        <li><s>strikethrough</s>: ~strikethrough~
+                        </li>
+                        <li><tt>monospace</tt>: ```monospace```
+                        </li>
+                    </ul>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_templates_edit" model="ir.actions.act_window">
+        <field name="name">Templates edit</field>
+        <field name="res_model">temp.database</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Creating new template.
+            </p>
+        </field>
+    </record>
+</odoo>

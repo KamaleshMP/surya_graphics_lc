@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="crm_lead_view_tree_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="create_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_lead_kanban_inherit_sg" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_kanban_content flex-grow-1']/div[3]" position="after">
+                    <field name="create_date"/>
+                    <br/>
+                    <field name="state_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

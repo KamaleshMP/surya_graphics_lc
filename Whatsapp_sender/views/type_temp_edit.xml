@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="tree_type_temp" model="ir.ui.view">
+        <field name="name">Types templates tree</field>
+        <field name="model">type.temp.database</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" default_order="handle">
+                <field name="handle" widget="handle"/>
+                <field name="name" decoration-danger="color == 'red'"
+                  decoration-info="color == 'blue'"
+                  decoration-primary="color == 'purple'"
+                  decoration-success="color == 'green'"
+                  decoration-warning="color == 'brown'"/>
+                <field name="color" widget='radio' options="{'horizontal': true}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_type_temp" model="ir.actions.act_window">
+        <field name="name">Types templates</field>
+        <field name="res_model">type.temp.database</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Adding types of the template.
+            </p>
+        </field>
+    </record>
+
+</odoo>

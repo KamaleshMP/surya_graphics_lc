@@ -1,0 +1,489 @@
+<odoo>
+    <data>
+
+        <record id="crm_tin_inherit_new" model="ir.ui.view">
+            <field name="name">Crm Lead</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="seq_no"/>
+                    <field name="sale_types_id" required="1"/>
+                </xpath>
+            </field>
+        </record>
+        # sequence Generation
+        <record id="sequence_generation" model="ir.sequence">
+            <field name="name">Crm Lead</field>
+            <field name="code">crm.lead</field>
+            <field name="prefix">/</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        #Kanban Inherited
+        <record id="crm_lead_kanban_inherit_sg" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_kanban_content flex-grow-1']/div[2]" position="after">
+                    <field name="seq_no"/><br/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- respartner add new field   -->
+        <record id="customer_tin_inherit" model="ir.ui.view">
+            <field name="name">Res Partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="customer_id" attrs="{'invisible': [('vendor_id','not in',False)]}"/>
+                    <field name="vendor_id" attrs="{'invisible': [('customer_id','not in',False)]}"/>
+                    <field name="cus_tin"/>
+                    <field name="pan_card_info"/>
+                    <field name="alternative_email"/>
+                    <!--                <field name="seq_no"/>-->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="surya_graphics_customer_sequence" model="ir.sequence">
+            <field name="name">Customer ID generation</field>
+            <field name="code">res.partner.customer</field>
+            <field name="prefix">SG</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <record id="surya_graphics_supplier_sequence" model="ir.sequence">
+            <field name="name">Supplier ID generation</field>
+            <field name="code">res.partner.vendor</field>
+            <field name="prefix">SG</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <record id="offset_printing_quotation" model="ir.sequence">
+            <field name="name">Offset Printing Quotation</field>
+            <field name="code">offset.printing.quotation</field>
+            <field name="prefix">OS/Q/22-23/</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <record id="view_on_boarding_form" model="ir.ui.view">
+            <field name="name">Sale Quotation</field>
+            <field name="model">sale.quotation</field>
+            <field name="arch" type="xml">
+                <form string="On Boarding">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_on_boarding_tree" model="ir.ui.view">
+            <field name="name">Sale Quotation tree</field>
+            <field name="model">sale.quotation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="off_boarding_action" model="ir.actions.act_window">
+            <field name="name">Sale Quotation</field>
+            <field name="res_model">sale.quotation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_in_asle_quotation" model="ir.ui.view">
+            <field name="name">Sale Type</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='l10n_in_gst_treatment']" position="after">
+                    <field name="sale_type_id" options="{'no_open': True, 'no_create': True}" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="name">Offset Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 1}</field>
+            <field name="domain">[('sale_type_id', '=', 1),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Offset Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Offset Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_quotations_flexo" model="ir.actions.act_window">
+            <field name="name">Flexo Printing Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 2}</field>
+            <field name="domain">[('sale_type_id', '=', 2),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Flexo Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Flexo Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_quotations_Rotogravure" model="ir.actions.act_window">
+            <field name="name">Rotogravure Printing Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 3}</field>
+            <field name="domain">[('sale_type_id', '=', 3),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Rotogravure Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Rotogravure Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_quotations_Digital" model="ir.actions.act_window">
+            <field name="name">Digital Printing Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 4}</field>
+            <field name="domain">[('sale_type_id', '=', 4),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Digital Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Digital Print quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_quotations_stand_pouches" model="ir.actions.act_window">
+            <field name="name">Stand Pouch Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 6}</field>
+            <field name="domain">[('sale_type_id', '=', 6),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Stand Pouch quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Stand Pouch quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="action_quotations_Label" model="ir.actions.act_window">
+            <field name="name">Label Printing Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 5}</field>
+            <field name="domain">[('sale_type_id', '=', 5),('state', '=', 'sale')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Label Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Label Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action OFFSET-->
+        <record id="action_order_action_offset" model="ir.actions.act_window">
+            <field name="name">Offset Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 1}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 1)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Offset Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Offset Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action Flexo-->
+        <record id="action_order_action_flexo" model="ir.actions.act_window">
+            <field name="name">Flexo Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 2}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 2)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Flexo Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Flexo Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action rotogravure-->
+        <record id="action_order_action_rotogravure" model="ir.actions.act_window">
+            <field name="name">Rotogravure Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 3}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 3)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new rotogravure Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the rotogravure Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action digital-->
+        <record id="action_order_action_digital" model="ir.actions.act_window">
+            <field name="name">Digital Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 4}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 4)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Digital Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Digital Printing quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action digital-->
+        <record id="action_order_action_stand_pouches" model="ir.actions.act_window">
+            <field name="name">Stand Pouches Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 6}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 6)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Stand Pouches quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Stand Pouches quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <!--    quotation order action label-->
+        <record id="action_order_action_label" model="ir.actions.act_window">
+            <field name="name">Label Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_sale_type_id': 5}</field>
+            <field name="domain">[('state', '=', 'draft'),('sale_type_id', '=', 5)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new label Printing quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the Digital label quotation is confirmed by the customer, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="menu_offboarding_main_new"
+                  name="Quotation Type"
+                  parent="sale.menu_sale_config"
+                  action="off_boarding_action"
+                  sequence="7"/>
+
+
+        <!--<menuitem id="menu_sale_flexico"
+                  name="Flexo Printing"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_flexo"
+                  sequence="7"/>-->
+
+
+        <menuitem id="menu_sale_offset"
+                  name="Offset Sale Order"
+                  parent="sale.sale_order_menu"
+                  action="sale.action_quotations_with_onboarding"
+                  sequence="1"/>
+
+
+        <menuitem id="menu_sale_flexico"
+                  name="Flexo Sale Order"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_flexo"
+                  sequence="2"/>
+
+        <menuitem id="menu_sale_Rotogravure"
+                  name="Rotogravure Sale Order"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_Rotogravure"
+                  sequence="3"/>
+
+        <menuitem id="menu_sale_Digital"
+                  name="Digital Sale Order"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_Digital"
+                  sequence="4"/>
+
+        <menuitem id="menu_sale_Label"
+                  name="Label Sale Order"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_Label"
+                  sequence="5"/>
+
+        <menuitem id="menu_stand_pouch_order"
+                  name="Stand Pouch Order"
+                  parent="sale.sale_order_menu"
+                  action="action_quotations_stand_pouches"
+                  sequence="6"/>
+
+        <menuitem id="menu_quotation_order_main"
+                  name="Quotation"
+                  parent="sale.sale_menu_root"
+                  sequence="1"/>
+
+        <menuitem id="menu_quotation_order_offset"
+                  name="Offset Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_offset"
+                  sequence="1"/>
+
+        <menuitem id="menu_quotation_order_flexo"
+                  name="Flexo Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_flexo"
+                  sequence="2"/>
+
+        <menuitem id="menu_quotation_order_rotogravure"
+                  name="Rotogravure Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_rotogravure"
+                  sequence="3"/>
+
+        <menuitem id="menu_quotation_order_digital"
+                  name="Digital Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_digital"
+                  sequence="4"/>
+
+        <menuitem id="menu_quotation_order_label"
+                  name="Label Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_label"
+                  sequence="5"/>
+
+        <menuitem id="menu_quotation_stand_pouches"
+                  name="Stand Pouches Quotation"
+                  parent="menu_quotation_order_main"
+                  action="action_order_action_stand_pouches"
+                  sequence="6"/>
+        <!--        <menuitem id="sale.menu_sale_quotations"-->
+        <!--                  groups="sales_team.group_sale_salesman"-->
+        <!--                  sequence="10"/>-->
+        <!--        <menuitem id="sale.menu_sale_order"-->
+        <!--                  name="Orders"-->
+        <!--                  groups="sales_team.group_sale_salesman"-->
+        <!--                  sequence="20"/>-->
+    </data>
+</odoo>

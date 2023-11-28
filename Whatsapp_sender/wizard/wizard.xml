@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="form_send_msg" model="ir.ui.view">
+        <field name="name">Form send message</field>
+        <field name="model">send.msg</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="phone"/>
+                </group>
+                <group string="Message">
+                    <group style="width: 25%;">
+                        <field name="type_message" widget="radio"/>
+                    </group>
+                    <group attrs="{'invisible': [('type_message', '=', 'template')]}"
+                           style="width: 75%;"> <!-- This show custom message   -->
+                        <field name="custom_msg"/>
+                    </group>
+                    <group attrs="{'invisible': [('type_message', '=', 'custom')]}"
+                           style="width: 75%;"> <!-- This show template message -->
+                        <field name="template"/>
+                        <field name="template_msg" attrs="{'invisible': [('template', '=', False)]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="send" string="Send" type="object" class="oe_highlight"/>
+                    <button string="Discard" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_send_msg" model="ir.actions.act_window">
+        <field name="name">Send message</field>
+        <field name="res_model">send.msg</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

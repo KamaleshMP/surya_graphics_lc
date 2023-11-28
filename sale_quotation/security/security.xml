@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <record id="sale_hide_menu" model="res.groups">
+            <field name="name">Render</field>
+            <field name="comment">only render will have access sale menu</field>
+        </record>
+    </data>
+</odoo>
