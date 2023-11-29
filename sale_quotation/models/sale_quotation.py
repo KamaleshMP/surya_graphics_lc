@@ -213,6 +213,7 @@ class Crmlead(models.Model):
 
     seq_no = fields.Char(string='Sequence')
     sale_types_id = fields.Many2one('sale.quotation', string='Quotation Type')
+    mobile = fields.Char(string="Mobile",required='1')
 
     # CRM LEAD EXISTING FUNCTION INCLUDED HERE AND PASSED ONLY SALE_TYPE_ID TO PLACE INTO QUOTATION
     def _prepare_opportunity_quotation_context(self):
@@ -235,40 +236,13 @@ class Crmlead(models.Model):
             quotation_context['default_user_id'] = self.user_id.id
         return quotation_context
 
-    # class IrSequence(models.Model):
-    #     _inherit = "ir.sequence"
-    #
-    #     @api.model
-    #     def default_get(self, fields):
-    #         result = super(IrSequence, self).default_get(fields)
-    #         line_val = []
-    #         from datetime import date
-    #         a = date(date.today().year, 1, 1)
-    #         b = date(date.today().year, 12, 31)
-    #         date_list = []
-    #         curr_date = a
-    #         while curr_date <= b:
-    #             date_list.append(curr_date)
-    #             curr_date += timedelta(days=1)
-    #         for rec in date_list:
-    #             line = (0, 0, {
-    #                 'date_from': rec,
-    #                 'date_to': rec,
-    #             })
-    #             line_val.append(line)
-    #         result.update({
-    #             'date_range_ids': line_val,
-    #         })
-    #         return resul
-
-    @api.model
-    def create(self, values):
-        current_month = datetime.now().month
-        current_year = datetime.now().year
-        abbr_month = calendar.month_abbr[current_month]
-        print("------------------------------------------",abbr_month)
-        seq_no = self.sudo().env['ir.sequence'].get('crm.lead') or '/'
-        values['seq_no'] = str(abbr_month) + "/" + str(current_year)+str(seq_no)
-
-        res = super(Crmlead, self).create(values)
-        return res
+    # @api.model
+    # def create(self, values):
+    #     current_month = datetime.now().month
+    #     current_year = datetime.now().year
+    #     abbr_month = calendar.month_abbr[current_month]
+    #     print("------------------------------------------", values)
+    #     seq_no = self.sudo().env['ir.sequence'].get('crm.lead') or '/'
+    #     values['seq_no'] = str(abbr_month) + "/" + str(current_year) + str(seq_no)
+    #     res = super(Crmlead, self).create(values)
+    #     return res

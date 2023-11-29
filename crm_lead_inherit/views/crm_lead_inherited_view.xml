@@ -11,7 +11,6 @@
                 </xpath>
             </field>
         </record>
-
         <record id="crm_lead_kanban_inherit_sg" model="ir.ui.view">
             <field name="name">crm.lead.kanban.inherited</field>
             <field name="model">crm.lead</field>

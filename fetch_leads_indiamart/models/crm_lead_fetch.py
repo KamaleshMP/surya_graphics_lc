@@ -4,6 +4,8 @@ from odoo import http
 from odoo.exceptions import AccessDenied, AccessError
 from odoo.http import request
 import logging
+from datetime import datetime
+import calendar
 
 
 class Lead(models.Model):
@@ -28,7 +30,7 @@ class Lead(models.Model):
         headers = {}
         response = requests.request("GET", url, headers=headers, data=payload)
         response_json = response.json()
-        print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::",response_json)
+        print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::", response_json)
         if response_json["CODE"] == 200:
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             if response_json["RESPONSE"]:
@@ -61,6 +63,10 @@ class Lead(models.Model):
                     else:
                         partner = self.env['res.partner'].sudo().create(partner_data)
                         partner_id = partner
+                        current_month = datetime.now().month
+                        current_year = datetime.now().year
+                        abbr_month = calendar.month_abbr[current_month]
+                        seq_no = self.sudo().env['ir.sequence'].get('crm.lead') or '/'
                     vals = {
                         'lead_enquiry_id': data['UNIQUE_QUERY_ID'],
                         'source_of_lead': data['QUERY_TYPE'],
@@ -71,7 +77,14 @@ class Lead(models.Model):
                         'description': data['QUERY_MESSAGE'],
                         'lead_product_cat': data['QUERY_MCAT_NAME'],
                         'stage_id': self.env.ref('fetch_leads_indiamart.stage_indiamart').id,
-                        'user_id': self.env.ref('base.user_admin').id
+                        'user_id': self.env.ref('base.user_admin').id,
+                        'seq_no': str(abbr_month) + str(current_year) + str(seq_no)
                     }
                     self.env['crm.lead'].sudo().create(vals)
                     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!+++++!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+    # @api.model
+    # def create(self, values):
+    #
+    #     print("------------------------------------------", values)
+    #

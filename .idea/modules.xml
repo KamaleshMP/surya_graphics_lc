@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/SuriyaGraphics.iml" filepath="$PROJECT_DIR$/.idea/SuriyaGraphics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../oddo-16/.idea/oddo-16.iml" filepath="$PROJECT_DIR$/../../../oddo-16/.idea/oddo-16.iml" />
+    </modules>
+  </component>
+</project>

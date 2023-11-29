@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record id="crm_tin_inherit_new" model="ir.ui.view">
             <field name="name">Crm Lead</field>
             <field name="model">crm.lead</field>
@@ -10,27 +9,38 @@
                     <field name="seq_no"/>
                     <field name="sale_types_id" required="1"/>
                 </xpath>
+                <xpath expr="//field[@name='mobile']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <!--                <xpath expr='//field[@name="phone"]' position="after">-->
+                <!--                <field name="mob"/>-->
+                <!--            </xpath>-->
             </field>
         </record>
-        # sequence Generation
-        <record id="sequence_generation" model="ir.sequence">
-            <field name="name">Crm Lead</field>
-            <field name="code">crm.lead</field>
-            <field name="prefix">/</field>
-            <field name="padding">3</field>
-            <field name="number_increment">1</field>
-            <field name="company_id" eval="False"/>
-            <field name="implementation">standard</field>
+
+        <record id="quick_create_opportunity_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.quick_create</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email_from']" position="after">
+                    <field name="mobile" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
         </record>
 
-        #Kanban Inherited
+<!--        #Kanban Inherited-->
         <record id="crm_lead_kanban_inherit_sg" model="ir.ui.view">
             <field name="name">crm.lead.kanban.inherited</field>
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@class='oe_kanban_content flex-grow-1']/div[2]" position="after">
-                    <field name="seq_no"/><br/>
+                    <field name="seq_no" widget="badge" decoration-success="stage_id == 5"/>
+                    <br/>
                 </xpath>
             </field>
         </record>
